@@ -44,4 +44,3 @@ jobs:
           files: ./*.7z
           draft: true
           title: "Ports Collection v${{ env.BUILD_VERSION }}"
-		  

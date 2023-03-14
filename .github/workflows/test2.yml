@@ -33,7 +33,7 @@ jobs:
         run: |
           TAG="${{ github.ref_name }}"
           echo "BUILD_VERSION=${TAG#v}" >> $GITHUB_ENV
-		
+
       - name: Create Release
         uses: marvinpinto/action-automatic-releases@latest
         with:
@@ -41,4 +41,4 @@ jobs:
           prerelease: false
           files: ./*.7z
           draft: true
-          title: "Onion V${{ env.BUILD_VERSION }}"
+          title: "Ports Collection v${{ env.BUILD_VERSION }}"

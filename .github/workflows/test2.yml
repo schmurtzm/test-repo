@@ -1,13 +1,6 @@
 name: Zip Directories and Upload to Release
 
 
-permissions:
-  id-token: "write"
-  contents: "write"
-  packages: "write"
-  pull-requests: "read"
-
-
 on:
   push:
     tags:
@@ -23,10 +16,10 @@ jobs:
 
       - name: Install 7-Zip
         run: sudo apt-get update && sudo apt-get install p7zip-full
-      - name: manager sorr exception
+      - name: managing SorR too big file exception
         run: |
           7z x "Street of Rage Remake/Roms/PORTS/Games/Street of Rage Remake/SorR.7z" -o"Street of Rage Remake/Roms/PORTS/Games/Street of Rage Remake" && rm "Street of Rage Remake/Roms/PORTS/Games/Street of Rage Remake/SorR.7z"
-      - name: 7z Directories
+      - name: 7zipping Directories
         run: |
           for d in */ ; do
             cd "$d" && 7z a "../${d%/}.7z" . && cd ..
@@ -35,7 +28,6 @@ jobs:
         run: |
           TAG="${{ github.ref_name }}"
           echo "BUILD_VERSION=${TAG#v}" >> $GITHUB_ENV
-
       - name: Create Release
         uses: marvinpinto/action-automatic-releases@latest
         with:

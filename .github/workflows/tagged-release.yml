@@ -1,4 +1,4 @@
-name: 7z release test
+name: tesssst
 
 
 on:
@@ -6,10 +6,10 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
-    - uses: edgarrc/action-7z@v1
-      with:
-        args: 7z a -t7z -mx=9 build.7z "./Bfruit (PyGame)/"
+    - uses: actions/checkout@v1
+    - name: Zip Folder
+      run: zip -r release.zip .
+    - name: Release to Github
+      run: echo "Release"

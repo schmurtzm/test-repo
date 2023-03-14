@@ -38,4 +38,3 @@ jobs:
             curl --data-binary "@$dir.zip" -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" -H "Content-Type: application/zip" -X POST "https://uploads.github.com/repos/${{ github.repository }}/releases/${{ steps.create_release.outputs.id }}/assets?name=${dir::-1}.zip" && \
             rm $dir.zip
           done
-        uses: actions/upload-release-asset@v1.0.1

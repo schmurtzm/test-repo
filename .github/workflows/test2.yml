@@ -25,7 +25,7 @@ jobs:
         run: sudo apt-get update && sudo apt-get install p7zip-full
       - name: manager sorr exception
         run: |
-          7z x "Street of Rage Remake/Roms/PORTS/Games/Street of Rage Remake/SorR.7z" -o"Street of Rage Remake/Roms/PORTS/Games/Street of Rage Remake"
+          7z x "Street of Rage Remake/Roms/PORTS/Games/Street of Rage Remake/SorR.7z" -o"Street of Rage Remake/Roms/PORTS/Games/Street of Rage Remake" && rm "Street of Rage Remake/Roms/PORTS/Games/Street of Rage Remake/SorR.7z"
       - name: 7z Directories
         run: |
           for d in */ ; do

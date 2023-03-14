@@ -13,9 +13,8 @@ on:
     tags:
       - v*
 
+
 jobs:
-
-
   build:
     runs-on: ubuntu-latest
 
@@ -25,10 +24,10 @@ jobs:
       - name: Install 7-Zip
         run: sudo apt-get update && sudo apt-get install p7zip-full
 
-      - name: Zip Directories
+      - name: 7z Directories
         run: |
           for d in */ ; do
-            7z a -tzip "${d%/}.zip" "$d"
+            cd "$d" && 7z a "../${d%/}.7z" . && cd ..
           done
 
       - name: Create Release
@@ -36,6 +35,6 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           prerelease: false
-          files: ./*.zip
+          files: ./*.7z
           draft: true
           title: "Onion V"

@@ -37,4 +37,4 @@ jobs:
           prerelease: false
           files: ./*.7z
           draft: true
-          title: "Onion V"
+          title: "Onion V${{ env.BUILD_VERSION }}"

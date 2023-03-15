@@ -24,7 +24,7 @@ jobs:
               release=$(curl -s https://api.github.com/repos/$GITHUB_REPOSITORY/releases/latest | jq -r '.assets[] | select(.name | contains("'"$name"'")) | .url')
               size=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "$release" | jq '.size' | numfmt --to=iec)
               download_url=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "$release" | jq -r '.browser_download_url')
-              echo "| [$name]($download_url) | <a href=\"$download_url\"><img src=\"$image\" alt=\"$name\" height=\"200\" /></a> | $size |" >> Table.md
+              echo "| <a href=\"$download_url\"><img src=\"$image\" alt=\"$name\" height=\"200\" /></a><br>[$name]($download_url) <br> $size |" >> Table.md
             fi
           fi
         done

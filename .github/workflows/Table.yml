@@ -2,8 +2,6 @@ name: Generate a table of PNG images in directories
 
 on:
   push:
-    branches:
-      - main
     tags:
       - t*
 jobs:

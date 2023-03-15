@@ -28,6 +28,8 @@ jobs:
       - name: 7zipping Directories
         run: |
           for d in */ ; do
+            echo ${d%/}
+            echo ${d}
             cd "$d" && 7z a "../${d%/}.7z" . && cd ..
           done
       - name: Get version

@@ -40,6 +40,8 @@ jobs:
         if [ $count -ne 0 ]; then
           echo "" >> Table.md
         fi
+    - name: Create table of images for engines
+      run: |
         echo "|        |        |        |        |        |" > Table_engines.md
         echo "| :----: | :----: | :----: | :----: | :----: |" >> Table_engines.md
         count=0

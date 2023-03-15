@@ -22,7 +22,7 @@ jobs:
               name=$(basename "$dir")
               release=$(curl -s https://api.github.com/repos/$GITHUB_REPOSITORY/releases/latest | jq -r '.assets[] | select(.name | contains("'"$name"'")) | .browser_download_url')
               size=$(curl -sI "$release" | awk '/Content-Length/ {size=int($2/1024) "KB"} END {print size}')
-              echo "| [$name]($release) | [![$name]($image)]($release) | $size |" >> Table.md
+              echo "| [$name]($release) | <img src=\"$release\" alt=\"$name\" height=\"200\"> | $size |" >> Table.md
             fi
           fi
         done

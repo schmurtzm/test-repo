@@ -13,20 +13,24 @@ jobs:
     - uses: actions/checkout@v2
     - name: Create table of images
       run: |
-        echo "| Directory | Image | Size |" > Table.md
-        echo "| :--------: | :---: | :--: |" >> Table.md
+        echo "| Directory | File | Image | Size | Modified |" > Table.md
+        echo "| :--------: | :--: | :---: | :--: | :------: |" >> Table.md
         for dir in $(find . -type d -print); do
           if [ -d "$dir/Roms/PORTS/Imgs" ]; then
             image=$(find "$dir/Roms/PORTS/Imgs" -maxdepth 1 -type f -name "*.png")
             if [ -n "$image" ]; then
               name=$(basename "$dir")
-              release_url=$(curl -s https://api.github.com/repos/$GITHUB_REPOSITORY/releases/latest | jq -r '.assets[] | select(.name | contains("'"$name"'")) | .url')
-              release=$(curl -s $release_url | jq -r '.url')
-              size=$(curl -sI -H "Accept: application/octet-stream" "$release" | awk '/Content-Length/ {size=int($2/1024) "KB"} END {print size}')
-              echo "| [$name]($release) | <img src=\"$release\" alt=\"$name\" width=\"auto\" height=\"200\"> | $size |" >> Table.md
+              release=$(curl -s https://api.github.com/repos/$GITHUB_REPOSITORY/releases/latest | jq -r '.assets[] | select(.name | contains("'"$name"'")) | .browser_download_url')
+              size=$(curl -sI "$release" | awk '/Content-Length/ {size=int($2/1024) "KB"} END {print size}')
+              modified=$(date -r "$image" "+%Y-%m-%d %H:%M:%S")
+              echo "| [$name]($release) | [$image]($image) | <img src=\"$image\" alt=\"$name\" height=\"200\" /> | $size | $modified |" >> Table.md
             fi
           fi
         done
     - name: Commit and push changes
       run: |
-        git
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add Table.md
+        git commit -m "Add table of PNG images in directories"
+        git push

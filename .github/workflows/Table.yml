@@ -1,7 +1,7 @@
-name: Table
+name: Generate a table of PNG images in directories
 
 on:
-  push: # Exécuter le workflow lorsqu'un commit est poussé sur la branche principale
+  push:
     branches:
       - main
 
@@ -10,23 +10,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2 # Récupérer les fichiers du dépôt
-    - name: Créer le tableau des images
+    - uses: actions/checkout@v2
+    - name: Create table of images
       run: |
-        echo "|Dossier|Image|"
-        echo "|:---:|:---:|"
+        echo "| Directory | File | Image | Size | Modified |"
+        echo "| :--------: | :--: | :---: | :--: | :------: |"
         for dir in $(find . -type d -print); do
           if [ -d "$dir/Roms/PORTS/Imgs" ]; then
             image=$(find "$dir/Roms/PORTS/Imgs" -maxdepth 1 -type f -name "*.png")
             if [ -n "$image" ]; then
-              echo "|$dir|![image]($image)|"
+              name=$(basename "$dir")
+              release=$(curl -s https://api.github.com/repos/$GITHUB_REPOSITORY/releases/latest | jq -r '.assets[] | select(.name | contains("'"$name"'")) | .browser_download_url')
+              size=$(du -h "$image" | awk '{print $1}')
+              modified=$(date -r "$image" "+%Y-%m-%d %H:%M:%S")
+              echo "| [$name]($release) | [$image]($image) | <img src=\"$image\" alt=\"$name\" height=\"200\" /> | $size | $modified |"
             fi
           fi
-        done > Table.md # Écrire le tableau dans le fichier Table.md
-    - name: Commit et pousser les changements
+        done > README.md
+    - name: Commit and push changes
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add Table.md
-        git commit -m "Ajout du tableau des images PNG dans les dossiers"
+        git add README.md
+        git commit -m "Add table of PNG images in directories"
         git push

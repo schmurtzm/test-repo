@@ -21,7 +21,7 @@ jobs:
             if [ -n "$image" ]; then
               name=$(basename "$dir")
               release=$(curl -s https://api.github.com/repos/$GITHUB_REPOSITORY/releases/latest | jq -r '.assets[] | select(.name | contains("'"$name"'")) | .browser_download_url')
-              size=$(du -h "$image" | awk '{print $1}')
+              size=$(curl -sI "$release" | awk '/Content-Length/ {size=int($2/1024) "KB"} END {print size}')
               modified=$(date -r "$image" "+%Y-%m-%d %H:%M:%S")
               echo "| [$name]($release) | [$image]($image) | <img src=\"$image\" alt=\"$name\" height=\"200\" /> | $size | $modified |" >> Table.md
             fi

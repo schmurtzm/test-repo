@@ -10,32 +10,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Create table of images
       run: |
-        echo "| Directory | Image 1 | Name 1 | Size 1 | Image 2 | Name 2 | Size 2 | Image 3 | Name 3 | Size 3 | Image 4 | Name 4 | Size 4 | Image 5 | Name 5 | Size 5 |" > Table.md
-        echo "| :--------: | :-----: | :----: | :----: | :-----: | :----: | :----: | :-----: | :----: | :----: | :-----: | :----: | :----: | :-----: | :----: | :----: |" >> Table.md
+        echo "| Directory | Image | Size |" > Table.md
+        echo "| :--------: | :---: | :--: |" >> Table.md
         for dir in */ ; do
           echo image = "$image" in "$dir"
           if [ -d "$dir/Roms/PORTS/Imgs" ]; then
-            images=($(find "$dir/Roms/PORTS/Imgs" -maxdepth 1 -type f -name "*.png" | sort -V))
-            num_images=${#images[@]}
-            if [ $num_images -gt 0 ]; then
+            image=$(find "$dir/Roms/PORTS/Imgs" -maxdepth 1 -type f -name "*.png")
+            if [ -n "$image" ]; then
               name=$(basename "$dir" | sed -e 's/ /./g' -e 's/(//g' -e 's/)//g')
               release=$(curl -s https://api.github.com/repos/$GITHUB_REPOSITORY/releases/latest | jq -r '.assets[] | select(.name | contains("'"$name"'")) | .url')
               size=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "$release" | jq '.size' | numfmt --to=iec)
               download_url=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "$release" | jq -r '.browser_download_url')
-              row="| [$name]($download_url)"
-              for (( i=0; i<5; i++ )); do
-                if [ $i -lt $num_images ]; then
-                  image=${images[$i]}
-                  row+=" | <a href=\"$download_url\"><img src=\"$image\" alt=\"$name\" height=\"200\" /></a> | $image | $size"
-                else
-                  row+=" | | | "
-                fi
-              done
-              row+=" |"
-              echo $row >> Table.md
+              echo "| [$name]($download_url) | <a href=\"$download_url\"><img src=\"$image\" alt=\"$name\" height=\"200\" /></a> | $size |" >> Table.md
             fi
           fi
         done
@@ -46,3 +35,8 @@ jobs:
         git add Table.md
         git commit -m "Add table of PNG images in directories"
         git push
+
+
+
+
+

@@ -42,5 +42,5 @@ jobs:
           title: "Ports Collection v${{ env.BUILD_VERSION }}"
           prerelease: true
           files: ./*.7z
-
+          draft: true
 

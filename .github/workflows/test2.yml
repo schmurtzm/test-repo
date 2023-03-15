@@ -43,3 +43,4 @@ jobs:
           files: ./*.7z
           automatic_release_tag: latest
 
+

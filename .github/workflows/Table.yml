@@ -13,16 +13,18 @@ jobs:
     - uses: actions/checkout@v2
     - name: Create table of images
       run: |
-        echo "| Directory | Image | Size |" > Table.md
-        echo "| :--------: | :---: | :--: |" >> Table.md
+        echo "| Directory | Image | Download |" > Table.md
+        echo "| :--------: | :---: | :------: |" >> Table.md
         for dir in $(find . -type d -print); do
           if [ -d "$dir/Roms/PORTS/Imgs" ]; then
             image=$(find "$dir/Roms/PORTS/Imgs" -maxdepth 1 -type f -name "*.png")
             if [ -n "$image" ]; then
               name=$(basename "$dir")
               release=$(curl -s https://api.github.com/repos/$GITHUB_REPOSITORY/releases/latest | jq -r '.assets[] | select(.name | contains("'"$name"'")) | .browser_download_url')
-              size=$(curl -sI "$release" | awk '/Content-Length/ {size=int($2/1024) "KB"} END {print size}')
-              echo "| [$name]($release) | [![image]($image)]($release) | $size |" >> Table.md
+              size=$(curl -sI -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "$release" | awk '/Content-Length/ {size=int($2/1024) "KB"} END {print size}')
+              convert -resize x200 "$image" "resized.png"
+              mv "resized.png" "$image"
+              echo "| [$name]($release) | [![image]($image)]($image) | [Download]($release) ($size) |" >> Table.md
             fi
           fi
         done

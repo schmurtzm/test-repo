@@ -37,7 +37,6 @@ jobs:
       - name: Create Release
         uses: marvinpinto/action-automatic-releases@latest
         with:
-          automatic_release_tag: latest
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           title: "Ports Collection v${{ env.BUILD_VERSION }}"
           prerelease: true

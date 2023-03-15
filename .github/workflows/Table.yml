@@ -4,6 +4,9 @@ on:
   push:
     tags:
       - t*
+    branches:
+      - main
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -33,4 +36,3 @@ jobs:
         git add Table.md
         git commit -m "Add table of PNG images in directories"
         git push
-

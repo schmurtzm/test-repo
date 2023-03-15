@@ -42,5 +42,5 @@ jobs:
           prerelease: false
           files: ./*.7z
           draft: true
-          # automatic_release_tag: latest
+          automatic_release_tag: latest
 

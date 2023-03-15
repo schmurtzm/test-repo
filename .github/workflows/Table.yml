@@ -10,35 +10,35 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v2
     - name: Create table of images
       run: |
-        echo "| Directory | Image | Size |" > Table.md
-        echo "| :--------: | :---: | :--: |" >> Table.md
-        echo '<style> table, th, td { font-size: 14px; } a { font-size: 12px; } </style>' >> Table.md
+        echo "| Directory | Image | Size | Download Lk | Download Lk |" > Table.md
+        echo "| :--------: | :---: | :--: | :--------: | :--------: |" >> Table.md
         count=0
         for dir in */ ; do
           if [ -d "$dir/Roms/PORTS/Imgs" ]; then
             image=$(find "$dir/Roms/PORTS/Imgs" -maxdepth 1 -type f -name "*.png")
             if [ -n "$image" ]; then
-              fullname=$(basename "$dir")
               name=$(basename "$dir" | sed -e 's/ /./g' -e 's/(//g' -e 's/)//g')
               release=$(curl -s https://api.github.com/repos/$GITHUB_REPOSITORY/releases/latest | jq -r '.assets[] | select(.name | contains("'"$name"'")) | .url')
               size=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "$release" | jq '.size' | numfmt --to=iec)
               download_url=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "$release" | jq -r '.browser_download_url')
-              if [[ $count == 0 ]]; then
-                echo -n "| <a href=\"$download_url\"><img src=\"$image\" alt=\"$name\" height=\"200\" /></a><br><sub>[$fullname]($download_url)</sub><br> $size |" >> Table.md
-                count=$((count+1))
-              elif [[ $count == 4 ]]; then
-                echo "| <a href=\"$download_url\"><img src=\"$image\" alt=\"$name\" height=\"200\" /></a><br><sub>[$fullname]($download_url)</sub><br> $size |" >> Table.md
+              if [ $count -eq 0 ]; then
+                echo -n "| " >> Table.md
+              fi
+              echo -n "<a href=\"$download_url\"><img src=\"$image\" alt=\"$name\" height=\"200\" /></a><br><sub>[$name]($download_url)</sub><br>$size | " >> Table.md
+              count=$((count + 1))
+              if [ $count -eq 5 ]; then
+                echo "" >> Table.md
                 count=0
-              else
-                echo -n "| <a href=\"$download_url\"><img src=\"$image\" alt=\"$name\" height=\"200\" /></a><br><sub>[$fullname]($download_url)</sub><br> $size |" >> Table.md
-                count=$((count+1))
               fi
             fi
           fi
         done
+        if [ $count -ne 0 ]; then
+          echo "" >> Table.md
+        fi
     - name: Commit and push changes
       run: |
         git config --local user.email "action@github.com"

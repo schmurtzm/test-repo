@@ -21,8 +21,11 @@ jobs:
             if [ -n "$image" ]; then
               name=$(basename "$dir")
               release=$(curl -s https://api.github.com/repos/$GITHUB_REPOSITORY/releases/latest | jq -r '.assets[] | select(.name | contains("'"$name"'")) | .browser_download_url')
-              size=$(curl -sI -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "$release" | awk '/Content-Length/ {size=int($2/1024) "KB"} END {print size}')
-              echo "| [$name]($release) | [![image]($image)]($release) | $size |" >> Table.md
+              size=$(curl -sI "$release" | awk '/Content-Length/ {size=int($2/1024) "KB"} END {print size}')
+              convert "$image" -resize x200 "$(dirname "$image")/thumbnail_$(basename "$image")"
+              thumbnail="$(dirname "$image")/thumbnail_$(basename "$image")"
+              echo "| [$name]($release) | [![image]($thumbnail)]($release) | $size |" >> Table.md
+              echo "Added image $thumbnail from release $release with size $size"
             fi
           fi
         done

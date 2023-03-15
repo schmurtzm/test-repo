@@ -20,7 +20,7 @@ jobs:
           if [ -d "$dir/Roms/PORTS/Imgs" ]; then
             image=$(find "$dir/Roms/PORTS/Imgs" -maxdepth 1 -type f -name "*.png")
             if [ -n "$image" ]; then
-              name=$(echo basename "$dir" | sed -e 's/ /./g' -e 's/(//g' -e 's/)/g')
+              name=$(echo basename "$dir" | sed -e 's/ /./g' -e 's/(//g' -e 's/)//g')
               release=$(curl -s https://api.github.com/repos/$GITHUB_REPOSITORY/releases/latest | jq -r '.assets[] | select(.name | contains("'"$name"'")) | .url')
               size=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "$release" | jq '.size' | numfmt --to=iec)
               download_url=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "$release" | jq -r '.browser_download_url')

@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Create table of images for engines
       run: |
         echo "|        |        |        |        |        |" > Table_engines.md
@@ -22,7 +22,7 @@ jobs:
             if [ -n "$image" ]; then
               name=$(basename "$dir" | sed -e 's/ /./g' -e 's/(//g' -e 's/)//g')
               fullname=$(basename "$dir")
-              echo ----------------- $fullname    ----------  $name
+              echo ----------------- $fullname
               release=$(curl -s https://api.github.com/repos/$GITHUB_REPOSITORY/releases/latest | jq -r '.assets[] | select(.name | contains("'"$name"'")) | .url')
               echo xxxxxxxxxxxxxxx $release
               size=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "$release" | jq '.size' | numfmt --to=iec)
@@ -48,9 +48,6 @@ jobs:
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add Table.md
         git add Table_engines.md
         git commit -m "Add tables of PNG images in directories"
         git push
-
-

@@ -1,5 +1,6 @@
 | Directory | Image | Size |
 | :--------: | :---: | :--: |
-| [Bfruit (PyGame)]() | <a href=""><img src="Bfruit (PyGame)//Roms/PORTS/Imgs/Bfruit (PyGame).png" alt="Bfruit (PyGame)" height="200" /></a> |  |
+| [Bfruit.(PyGame)]() | <a href=""><img src="Bfruit (PyGame)//Roms/PORTS/Imgs/Bfruit (PyGame).png" alt="Bfruit.(PyGame)" height="200" /></a> |  |
 | [C-Dogs](https://github.com/schmurtzm/test-repo/releases/download/v1.5.6/C-Dogs.7z) | <a href="https://github.com/schmurtzm/test-repo/releases/download/v1.5.6/C-Dogs.7z"><img src="C-Dogs//Roms/PORTS/Imgs/C-Dogs.png" alt="C-Dogs" height="200" /></a> | 315K |
 | [Hocoslamfy](https://github.com/schmurtzm/test-repo/releases/download/v1.5.6/Hocoslamfy.7z) | <a href="https://github.com/schmurtzm/test-repo/releases/download/v1.5.6/Hocoslamfy.7z"><img src="Hocoslamfy//Roms/PORTS/Imgs/Hocoslamfy.png" alt="Hocoslamfy" height="200" /></a> | 38K |
+| [Street.of.Rage.Remake](https://github.com/schmurtzm/test-repo/releases/download/v1.5.6/Street.of.Rage.Remake.7z) | <a href="https://github.com/schmurtzm/test-repo/releases/download/v1.5.6/Street.of.Rage.Remake.7z"><img src="Street of Rage Remake//Roms/PORTS/Imgs/Street of Rage Remake.png" alt="Street.of.Rage.Remake" height="200" /></a> | 1.3M |

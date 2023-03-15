@@ -1,4 +1,4 @@
-name: Zip Directories and Upload to Release
+name: Create Ports Release
 
 permissions:
   id-token: "write"
@@ -13,7 +13,7 @@ on:
 
 
 jobs:
-  build:
+  tagged-release:
     runs-on: ubuntu-latest
 
     steps:
@@ -37,7 +37,7 @@ jobs:
         uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          prerelease: false
+          prerelease: true
           files: ./*.7z
           draft: true
           title: "Ports Collection v${{ env.BUILD_VERSION }}"

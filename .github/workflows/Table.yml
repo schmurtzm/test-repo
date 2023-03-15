@@ -2,8 +2,6 @@ name: Generate a table of PNG images in directories
 
 on:
   push:
-    tags:
-      - t*
     branches:
       - main
 
@@ -12,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v2
     - name: Create table of images
       run: |
         echo "| Directory | Image | Size |" > Table.md

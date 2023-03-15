@@ -38,7 +38,7 @@ jobs:
         uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          prerelease: true
+          prerelease: false
           files: ./*.7z
           draft: true
           title: "Ports Collection v${{ env.BUILD_VERSION }}"

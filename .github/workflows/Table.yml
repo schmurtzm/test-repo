@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Create table of images
       run: |
         echo "|        |        |        |        |        |" > Table.md
@@ -40,11 +40,44 @@ jobs:
         if [ $count -ne 0 ]; then
           echo "" >> Table.md
         fi
-
+    - name: Create table of images for engines
+      run: |
+        echo "|        |        |        |        |        |" > Table_engines.md
+        echo "| :----: | :----: | :----: | :----: | :----: |" >> Table_engines.md
+        count=0
+        for dir in */ ; do
+          if [ -d "$dir/Roms/PORTS/Imgs" ] && [ -f "$dir/Roms/PORTS/Games"/*/_required_files.txt ]; then
+            image=$(find "$dir/Roms/PORTS/Imgs" -maxdepth 1 -type f -name "*.png")
+            if [ -n "$image" ]; then
+              name=$(basename "$dir" | sed -e 's/ /./g' -e 's/(//g' -e 's/)//g')
+              fullname=$(basename "$dir")
+              echo ----------------- $fullname    ----------  $name
+              release=$(curl -s https://api.github.com/repos/$GITHUB_REPOSITORY/releases/latest | jq -r '.assets[] | select(.name | contains("'"$name"'")) | .url')
+              echo xxxxxxxxxxxxxxx $release
+              size=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "$release" | jq '.size' | numfmt --to=iec)
+              echo yyyyyyyyyyyyyyyy $size
+              download_url=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "$release" | jq -r '.browser_download_url')
+              echo zzzzzzzzzzzzzzzz $download_url
+              if [ $count -eq 0 ]; then
+                echo -n "| " >> Table_engines.md
+              fi
+              echo -n "<a href=\"$download_url\"><img src=\"$image\" alt=\"$fullname\" height=\"200\" /></a><br><sub>[$fullname]($download_url)<br>$size</sub> | " >> Table_engines.md
+              count=$((count + 1))
+              if [ $count -eq 5 ]; then
+                echo "" >> Table_engines.md
+                count=0
+              fi
+            fi
+          fi
+        done 
+        if [ $count -ne 0 ]; then
+          echo "" >> Table_engines.md
+        fi
     - name: Commit and push changes
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
+        git add Table.md
         git add Table_engines.md
         git commit -m "Add tables of PNG images in directories"
         git push

@@ -1,0 +1,32 @@
+name: Table
+
+on:
+  push: # Exécuter le workflow lorsqu'un commit est poussé sur la branche principale
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2 # Récupérer les fichiers du dépôt
+    - name: Créer le tableau des images
+      run: |
+        echo "|Dossier|Image|"
+        echo "|:---:|:---:|"
+        for dir in $(find . -type d -print); do
+          if [ -d "$dir/Roms/PORTS/Imgs" ]; then
+            image=$(find "$dir/Roms/PORTS/Imgs" -maxdepth 1 -type f -name "*.png")
+            if [ -n "$image" ]; then
+              echo "|$dir|![image]($image)|"
+            fi
+          fi
+        done > Table.md # Écrire le tableau dans le fichier Table.md
+    - name: Commit et pousser les changements
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add Table.md
+        git commit -m "Ajout du tableau des images PNG dans les dossiers"
+        git push

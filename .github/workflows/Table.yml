@@ -13,8 +13,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: Create table of images
       run: |
-        echo "| Directory | Image | Size | Download Lk | Download Lk |" > Table.md
-        echo "| :--------: | :---: | :--: | :--------: | :--------: |" >> Table.md
+        echo "| :------: | :------: | :------: | :------: | :------: |" >> Table.md
         count=0
         for dir in */ ; do
           if [ -d "$dir/Roms/PORTS/Imgs" ]; then
@@ -28,7 +27,7 @@ jobs:
               if [ $count -eq 0 ]; then
                 echo -n "| " >> Table.md
               fi
-              echo -n "<a href=\"$download_url\"><img src=\"$image\" alt=\"$fullname\" height=\"200\" /></a><br><sub>[$fullname]($download_url)</sub><br>$size | " >> Table.md
+              echo -n "<a href=\"$download_url\"><img src=\"$image\" alt=\"$fullname\" height=\"200\" /></a><br><sub>[$fullname]($download_url)<br>$size</sub> | " >> Table.md
               count=$((count + 1))
               if [ $count -eq 5 ]; then
                 echo "" >> Table.md

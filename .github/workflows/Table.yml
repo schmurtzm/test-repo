@@ -1,4 +1,4 @@
-name: Generate a table of PNG images in directories
+name: Creating Readme
 
 on:
   push:
@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Create table of images
       run: |
         echo "|        |        |        |        |        |" > Table.md
@@ -51,6 +51,7 @@ jobs:
             if [ -n "$image" ]; then
               name=$(basename "$dir" | sed -e 's/ /./g' -e 's/(//g' -e 's/)//g')
               fullname=$(basename "$dir")
+              echo ----------------- $fullname
               release=$(curl -s https://api.github.com/repos/$GITHUB_REPOSITORY/releases/latest | jq -r '.assets[] | select(.name | contains("'"$name"'")) | .url')
               size=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "$release" | jq '.size' | numfmt --to=iec)
               download_url=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "$release" | jq -r '.browser_download_url')

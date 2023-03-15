@@ -1,4 +1,4 @@
 | Directory | Image | Size |
 | :--------: | :---: | :--: |
-| [Hocoslamfy](https://github.com/schmurtzm/test-repo/releases/download/v1.4.8/Hocoslamfy.7z) | [![image](./Hocoslamfy/Roms/PORTS/Imgs/thumbnail_Hocoslamfy.png)](https://github.com/schmurtzm/test-repo/releases/download/v1.4.8/Hocoslamfy.7z) |  |
-| [C-Dogs]() | [![image](./C-Dogs/Roms/PORTS/Imgs/thumbnail_C-Dogs.png)]() |  |
+| [Hocoslamfy](https://github.com/schmurtzm/test-repo/releases/download/v1.4.8/Hocoslamfy.7z) | <img src="./Hocoslamfy/Roms/PORTS/Imgs/Hocoslamfy.png" alt="Hocoslamfy" height="200" /> |  |
+| [C-Dogs]() | <img src="./C-Dogs/Roms/PORTS/Imgs/C-Dogs.png" alt="C-Dogs" height="200" /> |  |

@@ -11,35 +11,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Create table of images
-      run: |
-        echo "|        |        |        |        |        |" > Table.md
-        echo "| :----: | :----: | :----: | :----: | :----: |" >> Table.md
-        count=0
-        for dir in */ ; do
-          if [ -d "$dir/Roms/PORTS/Imgs" ] && [ ! -f "$dir/Roms/PORTS/Games"/*/_required_files.txt ]; then
-            image=$(find "$dir/Roms/PORTS/Imgs" -maxdepth 1 -type f -name "*.png")
-            if [ -n "$image" ]; then
-              name=$(basename "$dir" | sed -e 's/ /./g' -e 's/(//g' -e 's/)//g')
-              fullname=$(basename "$dir")
-              release=$(curl -s https://api.github.com/repos/$GITHUB_REPOSITORY/releases/latest | jq -r '.assets[] | select(.name | contains("'"$name"'")) | .url')
-              size=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "$release" | jq '.size' | numfmt --to=iec)
-              download_url=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "$release" | jq -r '.browser_download_url')
-              if [ $count -eq 0 ]; then
-                echo -n "| " >> Table.md
-              fi
-              echo -n "<a href=\"$download_url\"><img src=\"$image\" alt=\"$fullname\" height=\"200\" /></a><br><sub>[$fullname]($download_url)<br>$size</sub> | " >> Table.md
-              count=$((count + 1))
-              if [ $count -eq 5 ]; then
-                echo "" >> Table.md
-                count=0
-              fi
-            fi
-          fi
-        done
-        if [ $count -ne 0 ]; then
-          echo "" >> Table.md
-        fi
     - name: Create table of images for engines
       run: |
         echo "|        |        |        |        |        |" > Table_engines.md

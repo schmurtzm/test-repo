@@ -51,7 +51,7 @@ jobs:
             if [ -n "$image" ]; then
               name=$(basename "$dir" | sed -e 's/ /./g' -e 's/(//g' -e 's/)//g')
               fullname=$(basename "$dir")
-              echo ----------------- $fullname
+              echo ----------------- $fullname    ----------  name
               release=$(curl -s https://api.github.com/repos/$GITHUB_REPOSITORY/releases/latest | jq -r '.assets[] | select(.name | contains("'"$name"'")) | .url')
               echo xxxxxxxxxxxxxxx $release
               size=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "$release" | jq '.size' | numfmt --to=iec)

@@ -76,3 +76,4 @@ jobs:
         git commit -m "Add tables of PNG images in directories"
         git push
 
+

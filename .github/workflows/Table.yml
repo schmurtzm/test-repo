@@ -22,10 +22,7 @@ jobs:
               name=$(basename "$dir")
               release=$(curl -s https://api.github.com/repos/$GITHUB_REPOSITORY/releases/latest | jq -r '.assets[] | select(.name | contains("'"$name"'")) | .browser_download_url')
               size=$(curl -sI "$release" | awk '/Content-Length/ {size=int($2/1024) "KB"} END {print size}')
-              convert "$image" -resize x200 "$(dirname "$image")/thumbnail_$(basename "$image")"
-              thumbnail="$(dirname "$image")/thumbnail_$(basename "$image")"
-              echo "| [$name]($release) | [![image]($thumbnail)]($release) | $size |" >> Table.md
-              echo "Added image $thumbnail from release $release with size $size"
+              echo "| [$name]($release) | <img src=\"$image\" alt=\"$name\" height=\"200\" /> | $size |" >> Table.md
             fi
           fi
         done

@@ -45,7 +45,6 @@ jobs:
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add Table.md
-        git add Table_engines.md
         git commit -m "Add tables of PNG images in directories"
         git push
 

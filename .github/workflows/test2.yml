@@ -39,7 +39,7 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           title: "Ports Collection v${{ env.BUILD_VERSION }}"
-          prerelease: true
+          prerelease: false
           files: ./*.7z
           draft: true
           # automatic_release_tag: latest

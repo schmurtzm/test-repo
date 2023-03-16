@@ -16,6 +16,7 @@ jobs:
         echo "" > README.md
         echo "" >> README.md
         echo \# Ports-Collection for Onion >> README.md
+        echo \#\# PORTS COLLECTION >> README.md
         echo \#\# FULL PORTS >> README.md
         echo These ports are free to play and contains all required assets. >> README.md
         echo "|        |        |        |        |        |" >> README.md
@@ -71,7 +72,7 @@ jobs:
               size=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "$release_asset_url" | jq '.size' | numfmt --to=iec)
               echo size : $size && sleep 1
               # download_url=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "$release_asset_url" | jq -r '.browser_download_url')
-              download_url=https://github.com/$GITHUB_REPOSITORY/release_asset_urls/latest/download/$name.7z
+              download_url=https://github.com/$GITHUB_REPOSITORY/releases/latest/download/$name.7z
               echo download_url : $download_url && sleep 1
               if [ $count -eq 0 ]; then
                 echo -n "| " >> README.md

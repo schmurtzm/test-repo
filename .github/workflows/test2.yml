@@ -27,10 +27,10 @@ jobs:
           7z x "Street of Rage Remake/Roms/PORTS/Games/Street of Rage Remake/SorR.7z" -o"Street of Rage Remake/Roms/PORTS/Games/Street of Rage Remake" && rm "Street of Rage Remake/Roms/PORTS/Games/Street of Rage Remake/SorR.7z"
       - name: 7zipping Directories
         run: |
+          mkdir -p archive
           for d in */ ; do
-            echo ${d%/}
-            echo ${d}
             cd "$d" && 7z a "../${d%/}.7z" . && cd ..
+            7z a -t7z -mx=9 -m0=lzma2 -mmt=on _Ports-Collection.7z "$d"
           done
       - name: Get version
         run: |

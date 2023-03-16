@@ -1,9 +1,7 @@
 name: Generate Readme
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
   build:
@@ -27,9 +25,13 @@ jobs:
             if [ -n "$image" ]; then
               name=$(basename "$dir" | sed -e 's/ /./g' -e 's/(//g' -e 's/)//g' -e 's/!/./g' -e 's/\x27/./g')
               fullname=$(basename "$dir")
+              echo ----------------- $fullname    ----------  $name
               release=$(curl -s https://api.github.com/repos/$GITHUB_REPOSITORY/releases/latest | jq -r '.assets[] | select(.name | contains("'"$name"'")) | .url')
+              echo release : $release
               size=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "$release" | jq '.size' | numfmt --to=iec)
+              echo size : $size
               download_url=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "$release" | jq -r '.browser_download_url')
+              echo download_url : $download_url
               if [ $count -eq 0 ]; then
                 echo -n "| " >> README.md
               fi

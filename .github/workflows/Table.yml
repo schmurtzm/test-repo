@@ -67,9 +67,10 @@ jobs:
               echo ----------------- $fullname    ----------  $name
               release=$(curl -s https://api.github.com/repos/$GITHUB_REPOSITORY/releases/latest | jq -r '.assets[]? | select(.name | contains("'"$name"'")) | .url')
               echo release : $release && sleep 1
-              size=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "$release" | jq '.size' | numfmt --to=iec)
+              size=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "latest" | jq '.size' | numfmt --to=iec)
               echo size : $size && sleep 1
-              download_url=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "$release" | jq -r '.browser_download_url')
+              # download_url=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "$release" | jq -r '.browser_download_url')
+              download_url=https://github.com/OnionUI/Ports-Collection/releases/latest/download/$name
               echo download_url : $download_url && sleep 1
               if [ $count -eq 0 ]; then
                 echo -n "| " >> README.md
@@ -79,6 +80,7 @@ jobs:
               if [ $count -eq 5 ]; then
                 echo "" >> README.md
                 count=0
+                # sleep 60
               fi
             fi
           fi
@@ -93,5 +95,3 @@ jobs:
         git add README.md
         git commit -m "Readme update"
         git push
-
-

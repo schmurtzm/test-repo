@@ -60,11 +60,11 @@ jobs:
               fullname=$(basename "$dir")
               echo ----------------- $fullname    ----------  $name
               release=$(curl -s https://api.github.com/repos/$GITHUB_REPOSITORY/releases/latest | jq -r '.assets[] | select(.name | contains("'"$name"'")) | .url')
-              echo xxxxxxxxxxxxxxx $release
+              echo release : $release
               size=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "$release" | jq '.size' | numfmt --to=iec)
-              echo yyyyyyyyyyyyyyyy $size
+              echo size : $size
               download_url=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "$release" | jq -r '.browser_download_url')
-              echo zzzzzzzzzzzzzzzz $download_url
+              echo download_url : $download_url
               if [ $count -eq 0 ]; then
                 echo -n "| " >> README.md
               fi

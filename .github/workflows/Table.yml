@@ -52,7 +52,7 @@ jobs:
         fi
     - name: Create table of images for engines
       run: |
-        release_assets_info=$(curl -s https://api.github.com/repos/$GITHUB_REPOSITORY/release_asset_urls/latest)
+        release_assets_info=$(curl -s https://api.github.com/repos/$GITHUB_REPOSITORY/releases/latest)
         echo "" >> README.md
         echo "" >> README.md
         echo \#\# PORT ENGINES >> README.md

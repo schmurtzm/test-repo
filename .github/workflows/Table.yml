@@ -58,7 +58,7 @@ jobs:
         echo ----------- $tag_name
         release_assets_info=$(curl -s https://api.github.com/repos/$GITHUB_REPOSITORY/releases/latest)
         tag_name=$(echo $release_assets_info | jq '.tag_name')
-        release_tag_name
+        
         echo "" >> README.md
         echo "" >> README.md
         echo \#\# PORT ENGINES >> README.md
@@ -75,15 +75,15 @@ jobs:
               echo ----------------- $fullname    ----------  $name
               
               release_asset_url=$(echo $release_assets_info | jq -r '.assets[]? | select(.name | contains("'"$name"'")) | .url')
-              echo release_asset_url : $release_asset_url && sleep 1
+              echo release_asset_url : $release_asset_url
               
               # size=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "$release_asset_url" | jq '.size' | numfmt --to=iec)
               size=$(echo $release_assets_info | jq -r '.assets[]? | select(.name | contains("'"$name"'")) | .size' | numfmt --to=iec)
-              echo size : $size && sleep 1
+              echo size : $size
               
               # download_url=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "$release_asset_url" | jq -r '.browser_download_url')
               download_url=https://github.com/$GITHUB_REPOSITORY/releases/latest/download/$name.7z
-              echo download_url : $download_url && sleep 1
+              echo download_url : $download_url
               
               if [ $count -eq 0 ]; then
                 echo -n "| " >> README.md

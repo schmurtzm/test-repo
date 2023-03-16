@@ -13,6 +13,8 @@ jobs:
     - uses: actions/checkout@v3
     - name: Create table of images
       run: |
+        release_assets_info=$(curl -s https://api.github.com/repos/$GITHUB_REPOSITORY/releases/latest)
+        tag_name=$(echo $release_assets_info | jq '.tag_name')
         echo "" > README.md
         echo "" >> README.md
         echo \# Ports-Collection for Onion >> README.md
@@ -53,7 +55,10 @@ jobs:
         fi
     - name: Create table of images for engines
       run: |
+        echo ----------- $tag_name
         release_assets_info=$(curl -s https://api.github.com/repos/$GITHUB_REPOSITORY/releases/latest)
+        tag_name=$(echo $release_assets_info | jq '.tag_name')
+        release_tag_name
         echo "" >> README.md
         echo "" >> README.md
         echo \#\# PORT ENGINES >> README.md

@@ -29,15 +29,21 @@ jobs:
           if [ -d "$dir/Roms/PORTS/Imgs" ] && [ ! -f "$dir/Roms/PORTS/Games"/*/_required_files.txt ]; then
             image=$(find "$dir/Roms/PORTS/Imgs" -maxdepth 1 -type f -name "*.png")
             if [ -n "$image" ]; then
-              name=$(basename "$dir" | sed -e 's/ /./g' -e 's/(//g' -e 's/)//g' -e 's/!/./g' -e 's/\x27/./g')
+              name=$(basename "$dir" | sed -e 's/ /./g' -e 's/(//g' -e 's/)//g' -e 's/!/./g' -e 's/\x27/./g' -e 's/\.\./\./g')
               fullname=$(basename "$dir")
               echo ----------------- $fullname    ----------  $name
-              release_asset_url=$(curl -s https://api.github.com/repos/$GITHUB_REPOSITORY/release_asset_urls/latest | jq -r '.assets[]? | select(.name | contains("'"$name"'")) | .url')
+              
+              release_asset_url=$(echo $release_assets_info | jq -r '.assets[]? | select(.name | contains("'"$name"'")) | .url')
               echo release_asset_url : $release_asset_url
-              size=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "$release_asset_url" | jq '.size' | numfmt --to=iec)
+              
+              # size=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "$release_asset_url" | jq '.size' | numfmt --to=iec)
+              size=$(echo $release_assets_info | jq -r '.assets[]? | select(.name | contains("'"$name"'")) | .size' | numfmt --to=iec)
               echo size : $size
-              download_url=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "$release_asset_url" | jq -r '.browser_download_url')
+              
+              # download_url=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "$release_asset_url" | jq -r '.browser_download_url')
+              download_url=https://github.com/$GITHUB_REPOSITORY/releases/latest/download/$name.7z
               echo download_url : $download_url
+              
               if [ $count -eq 0 ]; then
                 echo -n "| " >> README.md
               fi
@@ -55,7 +61,6 @@ jobs:
         fi
     - name: Create table of images for engines
       run: |
-        echo ----------- $tag_name
         release_assets_info=$(curl -s https://api.github.com/repos/$GITHUB_REPOSITORY/releases/latest)
         tag_name=$(echo $release_assets_info | jq '.tag_name')
         
@@ -89,11 +94,10 @@ jobs:
                 echo -n "| " >> README.md
               fi
               echo -n "<a href=\"$download_url\"><img src=\"$image\" alt=\"$fullname\" height=\"200\" /></a><br><sub>[$fullname]($download_url)<br>$size</sub> | " >> README.md
-              # count=$((count + 1))
+              count=$((count + 1))
               if [ $count -eq 5 ]; then
                 echo "" >> README.md
                 count=0
-                # sleep 60
               fi
             fi
           fi

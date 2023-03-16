@@ -13,7 +13,7 @@ jobs:
     - uses: actions/checkout@v3
     - name: Create table of images
       run: |
-        echo # Ports-Collection for Onion
+        echo # Ports-Collection for Onion > README.md
         echo ## FULL PORTS >> README.md
         echo These ports are free to play and contains all required assets. >> README.md
         echo "|        |        |        |        |        |" >> README.md
@@ -45,6 +45,8 @@ jobs:
         fi
     - name: Create table of images for engines
       run: |
+        echo "" >> README.md
+        echo "" >> README.md
         echo ## PORT ENGINES >> README.md
         echo The assets of these ports are licensed and must be added manually. Only open source engines and configuration are included. >> README.md
         echo "|        |        |        |        |        |" >> README.md

@@ -10,13 +10,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Wait for tagged-release task to succeed
-      uses: lewagon/wait-on-check-action@v1.3.1
-      with:
-        ref: ${{ github.ref }}
-        check-name: 'Tagged release'
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
-        wait-interval: 10
+    # - name: Wait for tagged-release task to succeed
+      # uses: lewagon/wait-on-check-action@v1.3.1
+      # with:
+        # ref: ${{ github.ref }}
+        # check-name: 'Tagged release'
+        # repo-token: ${{ secrets.GITHUB_TOKEN }}
+        # wait-interval: 10
     - uses: actions/checkout@v3
     - name: Create table of images
       run: |

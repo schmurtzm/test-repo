@@ -31,7 +31,7 @@ jobs:
       - name: 7zipping Directories
         run: |
           for d in */ ; do
-            cd "$d" && 7z a "../${d%/}.7z" . && 7z a "../-Onion-Ports-Collection_v${{ env.BUILD_VERSION }}".7z" . && cd ..
+            cd "$d" && 7z a "../${d%/}.7z" . && 7z a "../-Onion-Ports-Collection_v${{ env.BUILD_VERSION }}.7z" . && cd ..
           done
 
       - name: Create Release
